@@ -1,0 +1,17 @@
+{
+  "name": "container-tracker",
+  "version": "1.0.0",
+  "description": "Container Arrival Tracker with real-time cloud sync",
+  "type": "module",
+  "scripts": {
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@netlify/database": "^1.0.0",
+    "@netlify/functions": "^3.0.0",
+    "drizzle-orm": "beta"
+  },
+  "devDependencies": {
+    "drizzle-kit": "beta"
+  }
+}
