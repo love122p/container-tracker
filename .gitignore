@@ -1,0 +1,5 @@
+node_modules/
+.netlify/
+!.netlify/netlify-agent-runner-context.md
+dist/
+*.log

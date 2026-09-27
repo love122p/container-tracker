@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portline · Container Arrival Tracker</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="quay-lines" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="wordmark">
+      <span class="wordmark-mark">⌗</span>
+      <div class="wordmark-text">
+        <strong>PORTLINE</strong>
+        <span>Container Arrival Tracker</span>
+      </div>
+    </div>
+    <div class="sync-indicator" id="syncIndicator">
+      <span class="sync-dot" id="syncDot"></span>
+      <span id="syncLabel">Live sync</span>
+    </div>
+  </header>
+
+  <main class="deck">
+    <section class="stats" id="stats" aria-label="Fleet overview">
+      <article class="stat-tile" data-stat="total">
+        <span class="stat-value" id="statTotal">0</span>
+        <span class="stat-label">Tracked</span>
+      </article>
+      <article class="stat-tile stat-transit" data-stat="in_transit">
+        <span class="stat-value" id="statTransit">0</span>
+        <span class="stat-label">In transit</span>
+      </article>
+      <article class="stat-tile stat-arrived" data-stat="arrived">
+        <span class="stat-value" id="statArrived">0</span>
+        <span class="stat-label">Arrived</span>
+      </article>
+      <article class="stat-tile stat-delayed" data-stat="delayed">
+        <span class="stat-value" id="statDelayed">0</span>
+        <span class="stat-label">Delayed</span>
+      </article>
+    </section>
+
+    <section class="board">
+      <div class="board-head">
+        <h1>Manifest</h1>
+        <button class="btn-add" id="toggleFormBtn" type="button">
+          <span class="plus">+</span> Log container
+        </button>
+      </div>
+
+      <form class="add-form" id="addForm" hidden>
+        <div class="field">
+          <label for="containerNumber">Container #</label>
+          <input id="containerNumber" name="containerNumber" placeholder="MSCU 774521-9" required autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="originPort">Origin port</label>
+          <input id="originPort" name="originPort" placeholder="Busan, KR" required autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="destinationPort">Destination port</label>
+          <input id="destinationPort" name="destinationPort" placeholder="Long Beach, US" required autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="eta">ETA</label>
+          <input id="eta" name="eta" type="datetime-local" required />
+        </div>
+        <div class="field field-wide">
+          <label for="notes">Notes</label>
+          <input id="notes" name="notes" placeholder="Reefer unit, priority cargo…" autocomplete="off" />
+        </div>
+        <div class="field-actions">
+          <button type="button" class="btn-ghost" id="cancelFormBtn">Cancel</button>
+          <button type="submit" class="btn-solid">Add to manifest</button>
+        </div>
+        <p class="form-error" id="formError" hidden></p>
+      </form>
+
+      <div class="manifest" id="manifest" aria-live="polite">
+        <div class="skeleton-list" id="skeletonList">
+          <div class="skeleton-row"></div>
+          <div class="skeleton-row"></div>
+          <div class="skeleton-row"></div>
+        </div>
+      </div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <span class="empty-glyph">▤</span>
+        <p>No containers on the manifest yet.</p>
+        <p class="empty-sub">Log your first shipment to start tracking arrivals in real time.</p>
+      </div>
+    </section>
+  </main>
+
+  <template id="rowTemplate">
+    <article class="crate" data-id="">
+      <div class="crate-status" data-role="status-bar"></div>
+      <div class="crate-main">
+        <div class="crate-id">
+          <span class="crate-number" data-role="number"></span>
+          <span class="crate-route" data-role="route"></span>
+        </div>
+        <div class="crate-meta">
+          <span class="crate-eta" data-role="eta"></span>
+          <span class="crate-badge" data-role="badge"></span>
+        </div>
+        <p class="crate-notes" data-role="notes"></p>
+      </div>
+      <div class="crate-actions">
+        <button type="button" class="chip chip-transit" data-action="in_transit">In transit</button>
+        <button type="button" class="chip chip-delayed" data-action="delayed">Delayed</button>
+        <button type="button" class="chip chip-arrived" data-action="arrived">Arrived</button>
+        <button type="button" class="icon-btn" data-action="delete" aria-label="Remove container" title="Remove">✕</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="/app.js"></script>
+</body>
+</html>
